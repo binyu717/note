@@ -1,10 +1,8 @@
 package email;
 
 /**
- * 邮件配置
  *
- * @Author ming.jin
- * @Date 2017/8/4
+ * 邮件配置
  */
 public class EmailSMTPConfig {
 

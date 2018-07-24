@@ -1,8 +1,6 @@
 package email;
 
 /**
- * @Author ming.jin
- * @Date 2017/11/1
  *
  * email 附件
  */
