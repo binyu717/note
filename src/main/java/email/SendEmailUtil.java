@@ -115,28 +115,4 @@ public class SendEmailUtil {
         return email;
     }
 
-    public static void main(String[] args) {
-        SimpleEmail email = new SimpleEmail();
-
-        //通过Gmail Server 发送邮件
-        email.setHostName("smtp.gmail.com"); //设定smtp服务器
-        email.setSSL(Boolean.TRUE);          //设定是否使用SSL
-        email.setSslSmtpPort("465");         //设定SSL端口
-        email.setAuthentication("bin.yu@kuailework.com", "yuBin150"); //设定smtp服务器的认证资料信息
-
-        try {
-            email.addTo("reciever@gmail.com", "reciever"); //设定收件人
-            email.setCharset("UTF-8");//设定内容的语言集
-            email.setFrom("478494772@qq.com");//设定发件人
-            email.setSubject("Hello");//设定主题
-            email.setMsg("中国 ");//设定邮件内容
-            email.send();//发送邮件
-
-        } catch (Exception e) {
-            new RuntimeException("bb");
-        }
-        System.out.println("aaaaaa");
-
-    }
-
 }
