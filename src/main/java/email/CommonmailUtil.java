@@ -17,7 +17,7 @@ import java.util.List;
 public class CommonmailUtil {
 
 
-    private static final Logger log = LoggerFactory.getLogger(SendEmailUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(CommonmailUtil.class);
 
     /**
      * 验证邮箱服务器是否可用.

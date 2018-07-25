@@ -3,32 +3,128 @@ package email;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.pop3.POP3Folder;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 /**
+ * Message表示一个邮件，messgaes.getContent()返回一个Multipart对象。一个Multipart对象包含一个或多个BodyPart对象，来组成邮件的正文部分（包括附件）
+ * Multipart是一个容器它转载多个body Part（正文、附件或内嵌资源）。Part的getContent()方法就返回一个Multipart对象。
  * JavaMail收发邮件
  */
 public class JavaMailUtil {
+
+    private static final String IMAP = "imap";
+    private static final String POP3 = "pop3";
+
     public static void main(String[] args) {
-        String receivingServer = "";
+        String server = "";
         String mailProtocol = "";
         String email = "";
         String password = "";
         String port = "";
         String isSsl = "";
-        receiveMail(receivingServer, port, mailProtocol, email, password, isSsl);
+
+//        receiveMail(server, port, mailProtocol, email, password, isSsl);
+        sendEmail(server, port, mailProtocol, email, password, isSsl);
     }
 
-    public static void receiveMail(String receivingServer, String port,String mailProtocol, String email,String password,String isSsl)
+    public static void receiveMail(String server, String port,String mailProtocol, String email,String password,String isSsl)
     {
-        if ("imap".equals(mailProtocol)) {
-            receiveImapEmail(receivingServer, port, mailProtocol, email, password, isSsl);
-        } else if ("pop3".equals(mailProtocol)) {
-            receivePop3Email(receivingServer, port, mailProtocol, email, password, isSsl);
+
+        if (IMAP.equals(mailProtocol)) {
+            receiveImapEmail(server, port, mailProtocol, email, password, isSsl);
+        } else {
+
+            if (POP3.equals(mailProtocol)) {
+                receivePop3Email(server, port, mailProtocol, email, password, isSsl);
+            }
         }
     }
 
+    /**
+     * 发送简单邮件
+     * @param server
+     * @param port
+     * @param mailProtocol
+     * @param email
+     * @param password
+     * @param isSsl
+     */
+    private static void sendEmail(String server, String port,
+                                        String mailProtocol, String email, String password, String isSsl) {
+
+        try {
+            Properties prop = new Properties();
+            prop.setProperty("mail.host", server);
+            prop.setProperty("mail.transport.protocol",mailProtocol);
+            prop.setProperty("mail.smtp.auth", "true");
+            //使用JavaMail发送邮件的5个步骤
+            //1、创建session
+            Session session = Session.getInstance(prop);
+            //开启Session的debug模式，这样就可以查看到程序发送Email的运行状态
+            session.setDebug(true);
+            //2、通过session得到transport对象
+            Transport ts = session.getTransport();
+            //3、使用邮箱的用户名和密码连上邮件服务器，发送邮件时，发件人需要提交邮箱的用户名和密码给smtp服务器，用户名和密码都通过验证之后才能够正常发送邮件给收件人。
+            ts.connect(server, email, password);
+            //4、创建邮件
+            //创建邮件对象
+            MimeMessage message = new MimeMessage(session);
+            //指明邮件的发件人,此处需要和连接邮件服务器的用户名保持一致，否则报440
+            message.setFrom(new InternetAddress(email));
+            //指明邮件的收件人 Message.RecipientType.TO、Message.RecipientType.CC、Message.RecipientType.BCC
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress("478494772@qq.com"));
+            //邮件的标题
+            message.setSubject("javaMail发送邮件");
+            //邮件的文本内容
+//            message.setContent("这是一封普通邮件", "text/html;charset=UTF-8");
+            message.setContent(createAttachContent());
+            //5、发送邮件
+            ts.sendMessage(message, message.getAllRecipients());
+            ts.close();
+        } catch (Exception e) {
+            throw new RuntimeException("发送失败");
+        }
+    }
+
+    private static MimeMultipart createAttachContent(){
+        // 可包含多个MimeBodyPart,主要有三种子类型：mixed：附件、related：内嵌资源、alternative：纯文本与超文本共存。
+        MimeMultipart mp = new MimeMultipart();
+        try {
+            MimeBodyPart text = new MimeBodyPart();
+            text.setContent("使用JavaMail创建的带附件的邮件", "text/html;charset=UTF-8");
+            //创建邮件附件
+            MimeBodyPart attach = new MimeBodyPart();
+            DataHandler dh = new DataHandler(new FileDataSource("C:\\Users\\Administrator\\Desktop\\oneKey.bat"));
+            attach.setDataHandler(dh);
+            attach.setFileName(dh.getName());
+
+            //创建容器描述数据关系
+            mp.addBodyPart(text);
+            mp.addBodyPart(attach);
+            //
+            mp.setSubType("mixed");
+        } catch (Exception e) {
+            throw new RuntimeException("创建邮件内容异常");
+        }
+        return mp;
+    }
+
+    /**
+     * IMAP接收邮件
+     * @param receivingServer
+     * @param port
+     * @param mailProtocol
+     * @param email
+     * @param password
+     * @param isSsl
+     */
     private static void receiveImapEmail(String receivingServer, String port,
                                          String mailProtocol, String email,String password,String isSsl){
         Store storeObj;
