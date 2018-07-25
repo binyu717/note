@@ -7,10 +7,9 @@ import javax.mail.*;
 import java.util.Properties;
 
 /**
- * @Author ming.jin
- * @Date 2018/6/26
+ * JavaMail收发邮件
  */
-public class GetEmailUtil {
+public class JavaMailUtil {
     public static void main(String[] args) {
         String receivingServer = "";
         String mailProtocol = "";
@@ -18,20 +17,19 @@ public class GetEmailUtil {
         String password = "";
         String port = "";
         String isSsl = "";
-        // Calling checkMail method to check received emails
-        checkMail(receivingServer, port,mailProtocol, email, password,isSsl);
+        receiveMail(receivingServer, port, mailProtocol, email, password, isSsl);
     }
 
-    public static void checkMail(String receivingServer, String port,String mailProtocol, String email,String password,String isSsl)
+    public static void receiveMail(String receivingServer, String port,String mailProtocol, String email,String password,String isSsl)
     {
         if ("imap".equals(mailProtocol)) {
-            processImapEmail(receivingServer, port, mailProtocol, email, password, isSsl);
+            receiveImapEmail(receivingServer, port, mailProtocol, email, password, isSsl);
         } else if ("pop3".equals(mailProtocol)) {
-            processPop3Email(receivingServer, port, mailProtocol, email, password, isSsl);
+            receivePop3Email(receivingServer, port, mailProtocol, email, password, isSsl);
         }
     }
 
-    private static void processImapEmail(String receivingServer, String port,
+    private static void receiveImapEmail(String receivingServer, String port,
                                          String mailProtocol, String email,String password,String isSsl){
         Store storeObj;
         Session emailSessionObj;
@@ -79,7 +77,7 @@ public class GetEmailUtil {
         }
     }
 
-    private static void processPop3Email(String receivingServer, String port,
+    private static void receivePop3Email(String receivingServer, String port,
                                          String mailProtocol, String email,String password,String isSsl){
         Store storeObj;
         Session emailSessionObj;
