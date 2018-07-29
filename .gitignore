@@ -27,3 +27,4 @@ target/*
 *.gz
 *.classpath
 *.project
+.out/*

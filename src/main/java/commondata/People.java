@@ -47,7 +47,17 @@ public class People {
         this.friends = friends;
     }
 
-//    @Override
+    @Override
+    public String toString() {
+        return "People{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", friends=" + friends +
+                '}';
+    }
+
+
+    //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;
 //        if (o == null || getClass() != o.getClass()) return false;

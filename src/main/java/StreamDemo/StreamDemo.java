@@ -1,4 +1,4 @@
-package javaEightDemo;
+package StreamDemo;
 
 import commondata.People;
 
