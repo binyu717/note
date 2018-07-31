@@ -3,11 +3,10 @@ package guavaDemo;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author bin.yu
@@ -16,9 +15,9 @@ import java.util.Set;
 public class GuavaCollectionDemo {
 
     public static void main(String[] args) {
-
-        listsDemo();
-        // 集合操作：交集、差集、并集
+        // lists
+//        listsDemo();
+        // set集合操作：交集、差集、并集
 //        setsDemo();
         mapDemo();
     }
@@ -50,7 +49,10 @@ public class GuavaCollectionDemo {
                 return input.toUpperCase();
             }
         });
+        // lambda 表达式写法
+        List<String> transform = Lists.transform(lists, t -> t.toUpperCase());
         System.out.println(newList);// [DOCKER, JAVA, ORACLE]
+        System.out.println(transform);// [DOCKER, JAVA, ORACLE]
 //       根据size传入的List进行切割，切割成符合要求的小的List,并将这些小的List存入一个新的List对象中返回
         List<List<String>> partition = Lists.partition(list, 2);
         System.out.println(partition);
@@ -82,8 +84,56 @@ public class GuavaCollectionDemo {
     }
 
     private static void mapDemo() {
+        // difference：返回两个给定map之间的差异。
+        Map<String,String> map1 = new HashMap();
+        Map<String,String> map2 = new HashMap();
+        Map<String,String> map3 = new HashMap();
+        Map<String,String> map4 = new HashMap();
+        map1.put("a", "1");
+        map2.put("b", "2");
+        map3.put("c", "3");
+        map4.put("a", "1");
+        map4.put("b", "1");
+        System.out.println(Maps.difference(map1, map2));
+        System.out.println(Maps.difference(map1, map3));
+        System.out.println(Maps.difference(map2, map4));
 
+        /**
+         * asMap：返回一个活动的map
+         * 键值为给定的set中的值
+         * value为通过给定Function计算后的值。
+         */
+        Set<String> set = Sets.newHashSet("f", "b", "c");
+        //Function：简单的对元素做大写转换，下面示例多次使用
+        Function<String, String> function = new Function<String, String>() {
+            @Override
+            public String apply(String input) {
+                return input.toUpperCase();
+            }
+        };
+        System.out.println(Maps.asMap(set, function)); // {b=B, c=C, f=F}
+        // lambda写法
+        System.out.println(Maps.asMap(set, t->t.toUpperCase()));
 
+        /**
+         * toMap：返回一个不可变的ImmutableMap实例
+         * 其键值为给定keys中去除重复值后的值
+         * 其值为键被计算了valueFunction后的值
+         */
+        List<String> keys = Lists.newArrayList("a", "b", "c", "a");
+        //输出：{a=A, b=B, c=C}
+        System.out.println(Maps.toMap(keys, function));
 
+        /**
+         * uniqueIndex：返回一个不可变的ImmutableMap实例，
+         * 其value值为按照给定顺序的给定的values值
+         * 键值为相应的值经过给定Function计算后的值
+         */
+        List<String> values = Lists.newArrayList("a", "b", "c", "d");
+        /**
+         * 注：这里的value值不可重复，重复的话在转换后会抛出异常：
+         * IllegalArgumentException: Multiple entries with same key
+         */
+        System.out.println(Maps.uniqueIndex(values, function)); // {A=a, B=b, C=c, D=d}
     }
 }
