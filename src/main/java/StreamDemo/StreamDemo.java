@@ -2,9 +2,9 @@ package StreamDemo;
 
 import commondata.People;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -13,55 +13,70 @@ import java.util.stream.Collectors;
  **/
 public class StreamDemo {
 
-    public static void main(String[] args) {
-        StreamDemo streamDemo = new StreamDemo();
-        List list = new ArrayList();
-        list.add("a");
-        list.add("b");
-        list.add("c");
-        list.add("d");
-        list.add("e");
-        list.add("f");
+    private static void initData(List<String> strList,List<Integer> integerList,List<People> peopleList) {
 
-        List<People> peoples = new ArrayList();
-        peoples.add(new People("张三",20));
-        peoples.add(new People("李四",21));
-        peoples.add(new People("王五",23));
-        peoples.add(new People("赵六",24));
+        integerList.add(1);
+        integerList.add(2);
+        integerList.add(3);
+        integerList.add(4);
+        integerList.add(5);
 
-//        System.out.println("==============Collectors=============");
-//        streamDemo.collectorsDemo(list);
-        System.out.println("==============Reduce=============");
-        reduceDemo(peoples);
-//        List<People> collect = peoples.stream().collect(Collectors.reducing(0,People::getAge,(i,j)->i+j));
-        List<People> collect = peoples.stream().filter(i->i.getAge()==2).collect(Collectors.toList());
+        strList.add("a");
+        strList.add("b");
+        strList.add("c");
+        strList.add("d");
+        strList.add("e");
+        strList.add("f");
+
+        peopleList.add(new People("张三",20));
+        peopleList.add(new People("李四",21));
+        peopleList.add(new People("王五",23));
+        peopleList.add(new People("赵六",24));
+
     }
 
-    private void collectorsDemo(List list){
+    public static void main(String[] args) {
+        List<String> strList = new ArrayList();
+        List<Integer> integerList = new ArrayList<>();
+        List<People> peopleList = new ArrayList();
+        initData(strList,integerList,peopleList);
+        System.out.println("==============Collectors=============");
+//        collectorsDemo(strList);
+        System.out.println("==============Reduce=============");
+//        reduceDemo(integerList,peopleList);
+
+    }
+
+    private static void collectorsDemo(List list){
         String str1 = (String)list.stream().collect(Collectors.joining(" "));
         System.out.println(str1);
         String str2 = (String) list.stream().collect(Collectors.joining("|","start "," end"));
         System.out.println(str2);
     }
 
-    private static void reduceDemo(List list){
-        List<People> peoples = new ArrayList();
-        peoples.add(new People("张三",20));
-        peoples.add(new People("李四",21));
-        peoples.add(new People("王五",23));
-        peoples.add(new People("赵六",24));
-        peoples.stream().forEach(i-> System.out.println(i.getName()));
+    private static void reduceDemo(List<Integer> integerList,List<People> peopleList){
+        //  取出对象里的属性操作，计算年龄之和
+        Integer collect = peopleList.stream().collect(Collectors.reducing(0, People::getAge, (i, j) -> i + j));
+        System.out.println(collect);
+        // 一个参数
+        Optional<Integer> optional = integerList.stream().reduce((a, b) -> a + b);
+        System.out.println("optioal: " + optional.get());
+        // 对值进行其他处理，求奇数和
+        Optional<Integer> optional1 = integerList.stream().reduce((a, b) -> {
+            if (b % 2 != 0) {
+                return a + b;
+            } else {
+                return a;
+            }
+        });
+         System.out.println("optional1: "+optional1.get());
+        // 两个参数，第一个是初始值,
+        Integer integer = integerList.stream().reduce(2, (a, b) -> a * b);
+        System.out.println("integer: "+integer);
 
-//        list.stream().forEach(i-> System.out.println(i.));
-        List<People> collect = peoples.stream().filter(i->i.getAge()==2).collect(Collectors.toList());
+        //
+        System.out.println(integerList.parallelStream().reduce((a, b) -> a + b).get());
 
-
-        String string = String.format("id in (%s)", new String("'a','b'")).toString();
-        System.out.println(string);
-
-        BigDecimal bigDecimal = new BigDecimal(1);
-        BigDecimal add = bigDecimal.add(new BigDecimal(1)).add(null);
-        System.out.println(add);
 
     }
 }

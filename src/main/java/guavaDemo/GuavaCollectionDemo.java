@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author bin.yu
@@ -19,7 +20,8 @@ public class GuavaCollectionDemo {
 //        listsDemo();
         // set集合操作：交集、差集、并集
 //        setsDemo();
-        mapDemo();
+//        mapDemo();
+        System.out.println(String.format(" HE%sdDATE_FORMAT(created_time,'%%Y-%%m-%%d') ", "LL"));
     }
 
     private static void listsDemo() {
@@ -120,9 +122,13 @@ public class GuavaCollectionDemo {
          * 其键值为给定keys中去除重复值后的值
          * 其值为键被计算了valueFunction后的值
          */
-        List<String> keys = Lists.newArrayList("a", "b", "c", "a");
+        List<String> keys = Lists.newArrayList("a","d", "d", "c");
         //输出：{a=A, b=B, c=C}
-        System.out.println(Maps.toMap(keys, function));
+        System.out.println("guava方式list转map" + Maps.toMap(keys, function));
+
+        // remark:stream方式list不能有重复值，否则异常，并且生成的map不会按list的顺序返回，可能自带默认排序
+        Map<String, String> uppercaseMap = keys.stream().collect(Collectors.toMap(i -> i, t -> t.toUpperCase()));
+        System.out.println("stream方式list转map" + uppercaseMap);
 
         /**
          * uniqueIndex：返回一个不可变的ImmutableMap实例，
@@ -136,4 +142,6 @@ public class GuavaCollectionDemo {
          */
         System.out.println(Maps.uniqueIndex(values, function)); // {A=a, B=b, C=c, D=d}
     }
+
+
 }
