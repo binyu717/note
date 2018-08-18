@@ -1,4 +1,4 @@
-package designPattern;
+package interviewSubject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author bin.yu
  * @create 2018-07-14 14:18
  **/
-public class Example {
+public class Example1 {
 
     public static void main(String[] args) {
         demo(13);

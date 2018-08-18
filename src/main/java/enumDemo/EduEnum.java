@@ -1,5 +1,7 @@
 package enumDemo;
 
+import java.util.*;
+
 /**
  * @author bin.yu
  * @create 2018-01-05 15:39
@@ -49,6 +51,49 @@ public enum EduEnum {
     private EduEnum(String name, String desc) {
         this.name = name;
         this.desc = desc;
+    }
+
+
+    public static List<EduEnum> getAllItems() {
+        return Arrays.asList(EduEnum.values());
+    }
+
+    public static List<Map<String, String>> getAllForMap() {
+        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+        for (EduEnum edu : EduEnum.values()) {
+            Map<String, String> map = new HashMap<>();
+            map.put("name", edu.getName());
+            map.put("desc", edu.getDesc());
+            list.add(map);
+        }
+        return list;
+    }
+
+    public static String getNameByDesc(String desc) {
+        List<EduEnum> allItems = getAllItems();
+        for (EduEnum item : allItems) {
+            if (item.getDesc().equals(desc)) {
+                return item.getName();
+            }
+        }
+        return "";
+    }
+
+    public static String getDescByName(String name) {
+        List<EduEnum> allItems = getAllItems();
+        for (EduEnum item : allItems) {
+            if (item.getName().equals(name)) {
+                return item.getDesc();
+            }
+        }
+        return "";
+    }
+    public static Map<String, String> getMap() {
+        Map<String, String> map = new LinkedHashMap<>();
+        for (EduEnum edu : EduEnum.values()) {
+            map.put(edu.getName(), edu.getDesc());
+        }
+        return map;
     }
 
     public String getName() {

@@ -1,10 +1,7 @@
 package guavaDemo;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,8 +18,10 @@ public class GuavaCollectionDemo {
         // set集合操作：交集、差集、并集
 //        setsDemo();
 //        mapDemo();
-        System.out.println(String.format(" HE%sdDATE_FORMAT(created_time,'%%Y-%%m-%%d') ", "LL"));
-    }
+        biMapDemo();
+     }
+
+
 
     private static void listsDemo() {
         List<String> list = Lists.newArrayList("5", "2", "3");
@@ -141,7 +140,42 @@ public class GuavaCollectionDemo {
          * IllegalArgumentException: Multiple entries with same key
          */
         System.out.println(Maps.uniqueIndex(values, function)); // {A=a, B=b, C=c, D=d}
+
+
     }
 
+    /**
+     * BiMap是Guava提供的一种key和value双向关联的数据结构,它允许我们可以通过特定的value获取key值
+     */
+    private static void biMapDemo() {
+        HashBiMap<String, String> biMap = HashBiMap.create();
+        biMap.put("one", "bin");
+        try {
+            /**
+             * 通过put方法存入相同的value值，会抛出异常
+             * java.lang.IllegalArgumentException: value already present
+             */
+            biMap.put("two", "bin");
+        } catch (IllegalArgumentException e) {
+            System.out.println("------------------catch:"+e);
+            /**
+             * forcePut()：相同value值允许传入,相当于替换key
+             */
+            biMap.forcePut("three", "bin");
+            biMap.forcePut("four", "opt");
+            biMap.forcePut("five", "urs");
+        }
+        System.out.println(biMap.get("one"));//null
+        System.out.println(biMap.get("two"));//null
+        System.out.println(biMap.get("three"));//bin
+        System.out.println(biMap.get("four"));//bin
+        System.out.println(biMap);//{three=bin, four=opt, five=urs}
+        /**
+         * inverse()：进行键值对的反转，返回BiMap的一种双向映射关系,两者相互关联
+         */
+        System.out.println(biMap.inverse());//{bin=three, opt=four, urs=five}
+
+
+    }
 
 }
