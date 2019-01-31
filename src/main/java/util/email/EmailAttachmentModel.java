@@ -1,8 +1,8 @@
-package email;
+package util.email;
 
 /**
  *
- * email 附件
+ * util.email 附件
  */
 public class EmailAttachmentModel {
 

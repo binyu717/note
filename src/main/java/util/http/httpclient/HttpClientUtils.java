@@ -1,4 +1,4 @@
-package httpclient;
+package util.http.httpclient;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;

@@ -100,8 +100,8 @@ public class CodeImageUtil {
         try {
             boolean flag = ImageIO.write(image, "JPG", out);
             byte[] b = out.toByteArray();
-            /*File file = new File("D:\\work\\test");
-            FileOutputStream fos = new FileOutputStream(file);
+            /*File util.file = new File("D:\\work\\test");
+            FileOutputStream fos = new FileOutputStream(util.file);
             fos.write(b);*/
             BASE64Encoder base64Encoder = new BASE64Encoder();
             //result = Base64.encodeBase64String(b);

@@ -1,8 +1,10 @@
 package StreamDemo;
 
+import com.alibaba.fastjson.JSONArray;
 import commondata.People;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,10 +42,23 @@ public class StreamDemo {
         List<Integer> integerList = new ArrayList<>();
         List<People> peopleList = new ArrayList();
         initData(strList,integerList,peopleList);
-        System.out.println("==============Collectors=============");
+//        System.out.println("==============Collectors=============");
 //        collectorsDemo(strList);
-        System.out.println("==============Reduce=============");
+//        System.out.println("==============Reduce=============");
 //        reduceDemo(integerList,peopleList);
+
+        List<People> collect = peopleList.stream().filter(i -> i.getName().equals("张三")).collect(Collectors.toList());
+        System.out.println(JSONArray.toJSONString(collect));
+        collect.stream().forEach(i->i.setAge(55));
+        System.out.println(JSONArray.toJSONString(collect));
+        List<People> collect1 = peopleList.stream().filter(i -> i.getName().equals("张三")).collect(Collectors.toList());
+        List<People> copy = new ArrayList(collect1);
+        Collections.copy(copy,collect1);
+
+        copy.stream().forEach(i->i.setAge(66));
+        System.out.println(JSONArray.toJSONString(collect1));// 期望55
+//        System.out.println(JSONArray.toJSONString(copy));// 期望55
+
 
     }
 

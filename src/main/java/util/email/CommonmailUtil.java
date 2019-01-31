@@ -1,4 +1,4 @@
-package email;
+package util.email;
 
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
@@ -43,7 +43,7 @@ public class CommonmailUtil {
      * @param to      the to
      * @param subject the subject
      * @param msg     the msg
-     * @throws EmailException the email exception
+     * @throws EmailException the util.email exception
      */
     public static void sendTextEmail(EmailSMTPConfig config,String to,String subject,String msg) throws EmailException {
         HtmlEmail email = createEmail(config);
@@ -60,7 +60,7 @@ public class CommonmailUtil {
      * @param to      the to
      * @param subject the subject
      * @param msg     the msg
-     * @throws EmailException the email exception
+     * @throws EmailException the util.email exception
      */
     public static void sendHtmlEmail(EmailSMTPConfig config,
                                      String to,String subject,String msg)
@@ -80,7 +80,7 @@ public class CommonmailUtil {
      * @param subject        the subject
      * @param msg            the msg 一般使用FreeMarkerTemplateUtils创建内容
      * @param attachments the attachments
-     * @throws EmailException        the email exception
+     * @throws EmailException        the util.email exception
      * @throws MalformedURLException the malformed url exception
      */
     public static void sendHtmlEmailWithAttachment(EmailSMTPConfig config,

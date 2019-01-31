@@ -1,4 +1,4 @@
-package file;
+package util.file;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -206,7 +206,7 @@ public class FileUtils {
 	public static void writeBytes(File dest, byte[] data, int off, int len, boolean append) throws IOException {
 		if (dest.exists() == true) {
 			if (dest.isFile() == false) {
-				throw new IOException("Not a file: " + dest);
+				throw new IOException("Not a util.file: " + dest);
 			}
 		}
 		FileOutputStream out = null;

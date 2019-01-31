@@ -1,4 +1,4 @@
-package email;
+package util.email;
 
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.pop3.POP3Folder;
@@ -30,7 +30,7 @@ public class JavaMailUtil {
         String port = "";
         String isSsl = "";
 
-//        receiveMail(server, port, mailProtocol, email, password, isSsl);
+//        receiveMail(server, port, mailProtocol, util.email, password, isSsl);
         sendEmail(server, port, mailProtocol, email, password, isSsl);
     }
 
