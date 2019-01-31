@@ -20,7 +20,7 @@ public class InsertionSort {
         }
         System.out.println("============排序后============");
 //        insertionSort(srcSort);
-        insertionSortDichotomy(srcSort);
+        shellSort(srcSort);
 
         for (int i = 0; i < srcSort.length; i++) {
             if (i == srcSort.length - 1) {
@@ -32,43 +32,41 @@ public class InsertionSort {
     }
 
     private static int[] insertionSort(int[] srcSort) {
-        for (int i =1; i < srcSort.length; i++) {
-            int get = srcSort[i];
-            int j = i - 1;
-            while (  j >= 0&&srcSort[j] > get) {
-                srcSort[j + 1] = srcSort[j];
-                j--;
+        for(int i = 1; i < srcSort.length; i++) {
+            for(int j = i; (j > 0) && (srcSort[j] < srcSort[j-1]); j--) {
+                swap(srcSort, j, j - 1);
             }
-            srcSort[j+1] = get;
-
-
         }
         return srcSort;
     }
 
-    private static int[] insertionSortDichotomy(int[] srcSort) {
-        for (int i = 1; i < srcSort.length; i++) {
-            int get = srcSort[i];
-            int left = 0;
-            int right = i - 1;
-            while (left <= right) {
-                int mid = (right + left) / 2;
-                if (srcSort[mid] > get) {
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
+    // 希尔排序
+    private static void shellSort(int[] srcSort) {
+
+        int N = srcSort.length;
+        int h = 1;
+
+        while(h < N/3){
+            h = 3*h + 1;
+        }
+        //将数组变为h有序
+        while(h >= 1){
+            //将a[i]插入到a[i-h],a[i-2*h],a[i-3*h]...之中
+            for (int i = h; i < N; i++) {
+                for (int j = i; j >= h && srcSort[j]<srcSort[j-h]; j-=h) {
+                    swap(srcSort, j, j-h);
                 }
             }
-            for (int j = i - 1; j >= left; j--) {
-                srcSort[j + 1] = srcSort[j];
-            }
-            srcSort[left] = get;
-
+            h = h/3;
         }
-        return srcSort;
-
     }
 
+
+    private static void swap(int[] arr,int a,int b) {
+        int temp = arr[a];
+        arr[a] =arr[b];
+        arr[b] = temp;
+    }
 }
 
 
