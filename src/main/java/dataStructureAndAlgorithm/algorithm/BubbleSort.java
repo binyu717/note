@@ -1,4 +1,4 @@
-package dataStructureAndAlgorithm;
+package dataStructureAndAlgorithm.algorithm;
 
 /**
  * 冒泡排序

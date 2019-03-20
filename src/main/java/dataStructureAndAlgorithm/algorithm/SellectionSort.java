@@ -1,4 +1,4 @@
-package dataStructureAndAlgorithm;
+package dataStructureAndAlgorithm.algorithm;
 
 /**
  * 选择排序

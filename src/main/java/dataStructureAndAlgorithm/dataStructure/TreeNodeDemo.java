@@ -1,4 +1,4 @@
-package dataStructureAndAlgorithm;
+package dataStructureAndAlgorithm.dataStructure;
 
 /**
  * 二叉树

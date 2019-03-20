@@ -1,4 +1,4 @@
-package dataStructureAndAlgorithm;
+package dataStructureAndAlgorithm.algorithm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
