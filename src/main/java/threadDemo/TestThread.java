@@ -6,28 +6,53 @@ package threadDemo;
  **/
 public class TestThread {
 
-        public static void main(String[] args) {
-            System.out.println("主线程ID是：" + Thread.currentThread().getId());
-            MyThread my = new MyThread("线程1");
-            my.start();
+    static Demo d = new Demo();
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                d.foo();
+//                System.out.println(d.x);
+            }
+        });
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                d.bar();
+//                System.out.println(d.x);
+            }
+        });
+//        try {
+            t1.start();
+            t2.start();
+//            t1.join();
+//            t2.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
-            MyThread my2 = new MyThread("线程2") ;
-            /**
-             * 这里直接调用my2的run()方法。
-             */
-            my2.run() ;
-        }
+
+
     }
+}
 
-    class MyThread extends Thread {
-        private String name;
-        public MyThread(String name) {
-            this.name = name;
+    class Demo   {
+        public Demo() {
         }
-        @Override
-        public void run() {
-            System.out.println("名字：" + name + "的线程ID是="
-                    + Thread.currentThread().getId());
+
+        public long x = 0;
+        synchronized public void foo()  {
+            for (int i = 0; i < 9000000; i++) {
+                x++;
+            }
+            System.out.println("inner foo"+x);
+
+        }
+        synchronized public void bar()  {
+            for (int i = 0; i < 9000000; i++) {
+                x--;
+            }
+            System.out.println("inner bar"+x);
         }
 
 }
